@@ -19,6 +19,7 @@ import "./navigation.scss"
 import {Link} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 
 const drawerWidth = 240;
 const navItems = ["Zamów bukiet!", 'Home', 'About', 'Contact'];
@@ -77,11 +78,9 @@ export default function ElevateAppBar(props) {
                 ))}
                 <ListItem disablePadding>
                     <ListItemButton sx={{textAlign: 'center', padding: "20px"}}>
-                        <Link to={"/login"} className={"nav__login"}>
-                            <ListItemText>
-                                <AccountCircleIcon/>
-                            </ListItemText>
-                        </Link>
+                        <ListItemText>
+                            <AccountCircleIcon/>
+                        </ListItemText>
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -94,7 +93,7 @@ export default function ElevateAppBar(props) {
         <React.Fragment>
             <CssBaseline/>
             <ElevationScroll {...props}>
-                <AppBar component="nav">
+                <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px"}}>
                     <Toolbar>
                         <IconButton
                             color="inherit"
@@ -114,12 +113,15 @@ export default function ElevateAppBar(props) {
                                 <Logo/>
                             </Link>
                             <Link to={"/login"} className={"nav__login"}>
-                                <AccountCircleIcon/>
+                                <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>
+                            </Link>
+                            <Link to={"/cashout"} className={"nav__login"}>
+                                <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
                             </Link>
                         </Typography>
                         <Box sx={{display: {xs: 'none', sm: 'block'}}}>
                             {navItems.map((item) => (
-                                <Link key={item} className={"nav__btn"} to={"/"}>
+                                <Link key={item} className={"nav__btn"} to={`/${item}`}>
                                     {item}
                                 </Link>
                             ))}

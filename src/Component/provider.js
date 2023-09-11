@@ -1,14 +1,18 @@
 import React, {useState} from 'react';
 import MyContext from "../myContext";
-// import small from "../assets/ -2.jpg"
-// import medium from "../assets/ -3.jpg"
-// import big from "../assets/ -4.jpg"
 
 const MyProvider = ({children}) => {
     const [items, setItems] = useState(["Zamów bukiet!", 'Home', 'About', 'Contact']);
 
+    const flowers = []
+
+    for (let i = 1; i < 14; i++) {
+        flowers[i] = require(`../assets/${i}.jpg`);
+    }
+
     const values = {
-        ...items
+        items,
+        flowers
     }
 
     return (

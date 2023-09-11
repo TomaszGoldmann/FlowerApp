@@ -1,3 +1,5 @@
+@import "src/Theme/theme";
+
 .centered-container {
   display: flex;
   justify-content: center;
@@ -22,8 +24,7 @@
 }
 
 .img{
-  border-radius: 20px;
-  width: 200px;
+  border-radius: 10px;
   height: 200px;
 }
 
@@ -36,4 +37,25 @@
   span {
     margin-top: 20px;
   }
+}
+
+.scroll-carousel-viewport {
+  border-radius: 10px;
+  height: 200px;
+}
+
+.footer {
+  height: 80px;
+  margin: 20px 0;
+  background-color: $secondary;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: $main;
+}
+
+.mid {
+  margin: 0 auto;
+  text-decoration: none;
 }

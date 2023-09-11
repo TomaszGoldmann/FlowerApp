@@ -8,8 +8,8 @@ import {Link} from "react-router-dom";
 export const Login = () => {
     return (
         <Paper elevation={3} className={"login__window"}>
+            <h1>Zaloguj</h1>
             <Box>
-                <p>Login</p>
                 <TextField
                     // required
                     id="outlined-required"
@@ -19,7 +19,6 @@ export const Login = () => {
                 />
             </Box>
             <Box>
-                <p>Hasło</p>
                 <TextField
                     id="outlined-password-input"
                     label="Hasło"
@@ -29,11 +28,9 @@ export const Login = () => {
                 />
             </Box>
             <Box>
-                <Button>
-                    <Link to={"/login/signup"}>
-                        Utwórz konto
-                    </Link>
-                </Button>
+                <Link to={"/login/signup"} className={"signup__button"}>
+                    <Button variant="outlined">Utwórz konto</Button>
+                </Link>
                 <Button variant="contained">Zaloguj</Button>
             </Box>
         </Paper>
