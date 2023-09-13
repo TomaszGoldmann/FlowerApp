@@ -9,16 +9,15 @@ export const Login = () => {
     return (
         <Paper elevation={3} className={"login__window"}>
             <h1>Zaloguj</h1>
-            <Box>
+            <Box className={"login__window__input"}>
                 <TextField
                     // required
                     id="outlined-required"
                     label="E-mail"
                     placeholder={"...@gmail.com"}
-                    className={"login__login"}
                 />
             </Box>
-            <Box>
+            <Box className={"login__window__input"}>
                 <TextField
                     id="outlined-password-input"
                     label="Hasło"

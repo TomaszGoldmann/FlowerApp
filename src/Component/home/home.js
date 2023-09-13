@@ -12,6 +12,10 @@ import {NewsletterSection} from "./newsletter";
 
 export const Home = () => {
     const {items, flowers} = useContext(MyContext);
+    const pics = ["https://i.pinimg.com/564x/cf/cd/a3/cfcda3e5999bc356bc679d0bdda7bcd0.jpg",
+        "https://i.pinimg.com/564x/26/9b/91/269b91e9f54cf7fa7c9d8e7b9d8bcdd2.jpg",
+        "https://images.pexels.com/photos/1458282/pexels-photo-1458282.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "https://images.pexels.com/photos/16901383/pexels-photo-16901383/free-photo-of-woman-buying-flowers-in-shop.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"]
 
     const tiltOptions = {
         reverse: false,  // reverse the tilt direction
@@ -42,11 +46,12 @@ export const Home = () => {
                 <Grid xs={12} sm={6} md={4}>
                     <NewsletterSection/>
                 </Grid>
-                {items.map((item) => (
+                {items.map((item, i) => (
                     <Grid key={item} xs={12} sm={6} md={4}>
                         <Tilt options={tiltOptions}>
                             <Paper>
                                 <Link to={`/${item}`} className={"mid"}>
+                                    <img className={"paper__img"} src={`${pics[i]}`} alt={"flower"}/>
                                     <motion.div className={"paper"}>
                                         <Button>{item}</Button>
                                     </motion.div>

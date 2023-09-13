@@ -7,6 +7,9 @@ import Modal from '@mui/material/Modal';
 import InputLabel from '@mui/material/InputLabel';
 import {useState} from "react";
 import TextField from "@mui/material/TextField";
+// import ComboBox from "./WhichFlowerShop";
+// import {ModalCustom} from "./ModalCustom"
+import {Visualisation} from "./visualisation";
 
 const style = {
     position: 'absolute',
@@ -22,6 +25,13 @@ const style = {
 
 export const Order = () => {
     const [checked, setChecked] = useState([false, false, false]);
+    const [isCustom, setIsCustom] = useState(false);
+    const [color, setColor] = useState("Kolor");
+    const [flowerShopName, setFlowerShopName] = useState("");
+    const [suma, setSuma] = useState(0)
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     const [order, setOrder] = useState({
         whatOrdered:
             {
@@ -37,13 +47,6 @@ export const Order = () => {
             }
     })
 
-    const [color, setColor] = useState("Kolor");
-    const [flowerShopName, setFlowerShopName] = useState("");
-
-    const [suma, setSuma] = useState(0)
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
     const values = [5, 2, 20]
 
     const handlePop = price => {
@@ -58,9 +61,9 @@ export const Order = () => {
         setSuma(price)
     }
 
-    const handleAdd = num => {
-        setSuma(num)
-    }
+    // const handleAdd = num => {
+    //     setSuma(num)
+    // }
 
     const handleChange = (event, i) => {
         const {value, checked: isChecked} = event.target;
@@ -174,13 +177,22 @@ export const Order = () => {
                     </Paper>
                 </Grid>
                 <Grid xs={12} sm={6} md={4}>
-                    <Paper>
+                    <Paper onClick={() => {
+                        setIsCustom(true)
+                        handlePop(0)
+                    }}>
                         <Typography variant="h3" component="h3" sx={{textAlign: "center"}}>
                             Custom
                         </Typography>
                     </Paper>
                 </Grid>
+                <Grid xs={12} sm={12} md={12}>
+                    <Paper style={{height: "200px"}}>
+                        <Visualisation/>
+                    </Paper>
+                </Grid>
             </Grid>
+            {/*{isCustom && <ModalCustom/>}*/}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -210,6 +222,7 @@ export const Order = () => {
                         <MenuItem value={"red"}>red</MenuItem>
                         <MenuItem value={"purple"}>purple</MenuItem>
                     </Select>
+                    {/*<ComboBox/>*/}
                     <TextField id="outlined-basic"
                                label="Która kwiaciarnia"
                                variant="outlined"
@@ -240,9 +253,30 @@ export const Order = () => {
                                            value={values[2]}/>}
                         label="+20zł Dostawa do domu"
                     />
+                    {isCustom ? <div>
+                        <TextField
+                            id="standard-number"
+                            label="Róże"
+                            type="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="standard"
+                        />
+                        <TextField
+                            id="standard-number"
+                            label="Tulipany"
+                            type="number"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="standard"
+                        />
+                    </div> : null}
                     <Button variant="contained" onClick={handleClose}>suma: {suma}</Button>
                     <Button variant="contained" onClick={() => {
-                        console.log(order)
+                        localStorage.setItem('myObject', JSON.stringify(order))
+                        setOpen(false)
                     }}>Dodaj do koszyka</Button>
                 </Box>
             </Modal>
