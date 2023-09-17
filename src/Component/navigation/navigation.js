@@ -20,6 +20,10 @@ import {Link} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
+import {useContext} from "react";
+import MyContext from "../../myContext";
+import {getAuth, signOut} from "firebase/auth";
+import {app} from "../firebase/firebase";
 
 const drawerWidth = 240;
 const navItems = ["Zamów bukiet!", 'Home', 'About', 'Contact'];
@@ -50,8 +54,18 @@ ElevationScroll.propTypes = {
 };
 
 export default function ElevateAppBar(props) {
+    const {user, setUser} = useContext(MyContext);
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const handleSignOut = () => {
+        const auth = getAuth(app);
+        signOut(auth).then(() => {
+            setUser(null)
+        }).catch((error) => {
+            console.log(error.message)
+        });
+    }
 
     const handleDrawerToggle = () => {
         setMobileOpen((prevState) => !prevState);
@@ -104,19 +118,44 @@ export default function ElevateAppBar(props) {
                         >
                             {mobileOpen ? <CloseIcon/> : <MenuIcon/>}
                         </IconButton>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{mr: 2, display: {sm: 'none'}}}
+                        >
+                            {user ? <Typography
+                                    variant="h6"
+                                    component="div"
+                                    sx={{flexGrow: 1, display: {xs: 'block', sm: 'none'}}}
+                                    onClick={handleSignOut}>
+                                    {user.email}
+                            </Typography> :
+                                <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>}
+                            <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
+                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{flexGrow: 1, display: {xs: 'none', sm: 'flex'}}}
                         >
-                            <Link className={"nav__logo"} to={"/"}>
+                            <Link className={"nav__logo"} to={"/"} onClick={() => console.log(user)}>
                                 <Logo/>
                             </Link>
                             <Link to={"/login"} className={"nav__login"}>
-                                <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>
+                                {/*{user &&*/}
+                                {/*    <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>*/}
+                                {/*}*/}
+                                <IconButton>
+                                    {!user && <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>}
+                                </IconButton>
+                                {user && <h1 onClick={handleSignOut}>{user.email}</h1>}
                             </Link>
                             <Link to={"/cashout"} className={"nav__login"}>
-                                <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
+                                <IconButton>
+                                   <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
+                                </IconButton>
                             </Link>
                         </Typography>
                         <Box sx={{display: {xs: 'none', sm: 'block'}}}>

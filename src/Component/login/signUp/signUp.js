@@ -1,31 +1,36 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import TextField from '@mui/material/TextField';
 import {Button, Paper} from "@mui/material";
 import {getAuth, createUserWithEmailAndPassword} from "firebase/auth";
 import {app} from "../../firebase/firebase";
 import validator from 'validator';
+import {useNavigate} from "react-router-dom";
+import MyContext from "../../../myContext";
 
 export const SignUp = () => {
+    const navigate = useNavigate()
+    const {setUser, user} = useContext(MyContext);
     const [values, setValues] = useState({
         email: "",
         password: ""
     })
 
     const handleAdd = () => {
-        if (!validator.isEmail(values.email)) {
-            console.log("to nie email")
-            return
-        } else if (!validator.isStrongPassword(values.password)) {
-            console.log("słabe hasło")
-            return;
-        }
-        console.log("dobry mail i hasło")
+        // if (!validator.isEmail(values.email)) {
+        //     console.log("to nie email")
+        //     return
+        // } else if (!validator.isStrongPassword(values.password)) {
+        //     console.log("słabe hasło")
+        //     return;
+        // }
+        // console.log("dobry mail i hasło")
         const auth = getAuth(app);
         const {email, password} = values
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
-                const user = userCredential.user;
+                setUser(userCredential.user)
+                navigate("/")
                 // ...
             })
             .catch((error) => {
@@ -37,6 +42,9 @@ export const SignUp = () => {
 
     return (
         <Paper elevation={3} className={"login__window"}>
+            {user && <h1 onClick={()=> console.log(user.email)}>
+                Success
+            </h1>}
             <TextField
                 required
                 id="outlined-required"
