@@ -13,7 +13,8 @@ import {Store} from "../cashout/store";
 import {About} from "../about/about";
 import {Checkout} from "../cashout/checkout/Checkout";
 import {PaymentForm} from "../cashout/checkout/PaymentForm";
-import AddressForm from "../cashout/checkout/AddressForm";
+import {PrivateRoute} from "../PrivateRoute";
+import {Orders} from "../Orders/Orders";
 
 function App() {
     return (
@@ -27,9 +28,9 @@ function App() {
                         <Route path="/about" element={<About/>}/>
                         <Route path="/contact" element={<Contact/>}/>
                         <Route path="/login" element={<Login/>}/>
+                        <Route path="/orders" element={<Orders/>}/>
                         <Route path="/cashout" element={<Store/>}/>
-                        {/*<Route path="/cashout/addressform" element={<AddressForm/>}/>*/}
-                        <Route path="/cashout/checkout" element={<Checkout/>}/>
+                        <Route path="/cashout/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}/>
                         <Route path="/cashout/paymentForm" element={<PaymentForm/>}/>
                         <Route path="/login/signup" element={<SignUp/>}/>
                         <Route path="/*" element={<Home/>}/> {/* Domyślna ścieżka */}

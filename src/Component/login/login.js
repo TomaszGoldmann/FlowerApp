@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import {Button, Paper} from "@mui/material";
 import "./login.scss"
 import Box from "@mui/material/Box";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import MyContext from "../../myContext";
 
@@ -13,17 +13,18 @@ export const Login = () => {
         password: ""
     })
     const {setUser, user} = useContext(MyContext);
+    const navigate = useNavigate()
     const handleLogin = () => {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, values.email, values.password)
             .then((userCredential) => {
                 // Signed in
                 setUser(userCredential.user)
+                navigate("/")
                 // ...
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                console.log(error.message)
             });
     }
 

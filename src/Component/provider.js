@@ -3,7 +3,7 @@ import MyContext from "../myContext";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {app} from "./firebase/firebase";
 
-const UserContext = createContext(null)
+// const UserContext = createContext(null)
 
 const MyProvider = ({children}) => {
     const [user, setUser] = useState(null)
@@ -60,4 +60,4 @@ const MyProvider = ({children}) => {
 };
 
 export default MyProvider;
-export const useUser = () => useContext(UserContext)
+export const useUser = () => useContext(MyContext)

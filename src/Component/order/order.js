@@ -26,16 +26,17 @@ const style = {
 };
 
 export const Order = () => {
-    const [checked, setChecked] = useState([false, false, false]);
-    const [isCustom, setIsCustom] = useState(false);
-    const [color, setColor] = useState("Kolor");
     const [flowerShopName, setFlowerShopName] = useState("");
-    const [suma, setSuma] = useState(0)
+    const [color, setColor] = useState("Kolor");
     const [size, setSize] = useState("")
+    const [suma, setSuma] = useState(0)
     const [roses, setRoses] = useState(0)
     const [tulips, setTulips] = useState(0)
+    const [checked, setChecked] = useState([false, false, false]);
+    const [isCustom, setIsCustom] = useState(false);
     const [open, setOpen] = useState(false);
-    // localStorage.clear(); // Wyczyści całą pamięć podręczną localStorage
+
+
     // Pobierz istniejącą tablicę z localStorage lub inicjuj jako pustą tablicę
     const existingOrdersJSON = localStorage.getItem('myObject');
     const existingOrders = existingOrdersJSON ? JSON.parse(existingOrdersJSON) : [];
@@ -132,13 +133,13 @@ export const Order = () => {
     //     }
     // }
 
-    const handleRemove = () => {
-        console.log(bouquetContent)
-        setBouquetContent(prevState => {
-                return prevState.slice(0, -1);
-            }
-        )
-    };
+    // const handleRemove = () => {
+    //     console.log(bouquetContent)
+    //     setBouquetContent(prevState => {
+    //             return prevState.slice(0, -1);
+    //         }
+    //     )
+    // };
 
     const styl = (angle, reverse) => {
         const an = reverse ? -1 *angle : 1 * angle
@@ -161,16 +162,33 @@ export const Order = () => {
     }
 
     const handleTulip = e => {
-        setTulips(e.target.value)
         const newArr = new Array(e.target.value).fill(pic);
         const s = shuffleArray(newArr);
+        setTulips(e.target.value)
         setBouquetContent(s)
     }
     const handleRose = e => {
-        setRoses(e.target.value)
         const newArr = new Array(e.target.value).fill(pic2);
         const s = shuffleArray(newArr);
+        setRoses(e.target.value)
         setBouquetContent(s)
+    }
+
+    const handleAdd = () => {
+        // Dodaj nowy obiekt (order) do tablicy
+        existingOrders.push(order);
+        // Zapisz zaktualizowaną tablicę z powrotem do localStorage
+        localStorage.setItem('myObject', JSON.stringify(existingOrders));
+
+        setOpen(false)
+        setSize("")
+        setOpen(false);
+        setChecked([false, false, false])
+        setIsCustom(false)
+        setColor("Kolor")
+        setFlowerShopName("")
+        setRoses(0)
+        setTulips(0)
     }
 
     return (
@@ -312,13 +330,8 @@ export const Order = () => {
                         {/*<Button onClick={handleRemove} variant="contained">-</Button>*/}
                     </div> : null}
                     <Button variant="contained">suma: {suma} zł</Button>
-                    <Button variant="contained" onClick={() => {
-                        // Dodaj nowy obiekt (order) do tablicy
-                        existingOrders.push(order);
-                        // Zapisz zaktualizowaną tablicę z powrotem do localStorage
-                        localStorage.setItem('myObject', JSON.stringify(existingOrders));
-                        setOpen(false)
-                    }}>Dodaj do koszyka</Button>
+                    <Button variant="contained" onClick={handleAdd}
+                    >Dodaj do koszyka</Button>
                 </Box>
             </Modal>
         </Box>

@@ -6,7 +6,6 @@ import {getFirestore, collection, getDocs, addDoc, deleteDoc, doc, serverTimesta
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    // apiKey: "AIzaSyB0lMzzac0wf6yR1CSLw5O7ckVrazUmHYk",
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: "flowerapp-9eae7.firebaseapp.com",
     projectId: "flowerapp-9eae7",
@@ -24,8 +23,24 @@ export const db = getFirestore(app);
 //
 // db.collection('orders')
 
-const colRefOrders = collection(db, 'orders')
-const colRefNewsletter = collection(db, 'newsletter')
+export const colRefOrders = collection(db, 'orders')
+// const colRefNewsletter = collection(db, 'newsletter')
+
+// export const auth = getAuth();
+// const user = auth.currentUser;
+//
+// if (user !== null) {
+//     // The user object has basic properties such as display name, email, etc.
+//     const displayName = user.displayName;
+//     const email = user.email;
+//     const photoURL = user.photoURL;
+//     const emailVerified = user.emailVerified;
+//
+//     // The user's ID, unique to the Firebase project. Do NOT use
+//     // this value to authenticate with your backend server, if
+//     // you have one. Use User.getToken() instead.
+//     const uid = user.uid;
+// }
 
 // getDocs(colRef)
 //     .then((snapshot) => {

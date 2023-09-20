@@ -16,7 +16,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Logo} from "../../Logo/logo";
 import "./navigation.scss"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
@@ -54,6 +54,7 @@ ElevationScroll.propTypes = {
 };
 
 export default function ElevateAppBar(props) {
+    const navigate = useNavigate()
     const {user, setUser} = useContext(MyContext);
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -71,6 +72,12 @@ export default function ElevateAppBar(props) {
         setMobileOpen((prevState) => !prevState);
     };
 
+    // let content = null;
+
+    // if (user && user.email === "kwiaciarnia1@gmail.com") {
+        const content = <Link className={"nav__btn"} to={`/orders`}>Zamówienia</Link>;
+    // }
+
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
             <Typography variant="h6" sx={{py: 2, backgroundColor: "#718c7f"}}>
@@ -86,17 +93,12 @@ export default function ElevateAppBar(props) {
                 {navItems.map((item) => (
                     <ListItem key={item} disablePadding>
                         <ListItemButton sx={{textAlign: 'center', padding: "20px"}}>
-                            <ListItemText primary={item}/>
+                            <Link to={`/${item}`} style={{color: "inherit", textDecoration: "none", margin: "0 auto"}}>
+                                <ListItemText primary={item}/>
+                            </Link>
                         </ListItemButton>
                     </ListItem>
                 ))}
-                <ListItem disablePadding>
-                    <ListItemButton sx={{textAlign: 'center', padding: "20px"}}>
-                        <ListItemText>
-                            <AccountCircleIcon/>
-                        </ListItemText>
-                    </ListItemButton>
-                </ListItem>
             </List>
         </Box>
     );
@@ -119,11 +121,9 @@ export default function ElevateAppBar(props) {
                             {mobileOpen ? <CloseIcon/> : <MenuIcon/>}
                         </IconButton>
                         <IconButton
-                            color="inherit"
                             aria-label="open drawer"
                             edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{mr: 2, display: {sm: 'none'}}}
+                            sx={{display: {sm: 'none'}}}
                         >
                             {user ? <Typography
                                     variant="h6"
@@ -131,16 +131,18 @@ export default function ElevateAppBar(props) {
                                     sx={{flexGrow: 1, display: {xs: 'block', sm: 'none'}}}
                                     onClick={handleSignOut}>
                                     {user.email}
-                            </Typography> :
-                                <AccountCircleIcon sx={{width: "40px", height: "40px"}}/>}
-                            <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
+                                </Typography> :
+                                <AccountCircleIcon onClick={() => navigate("/login")}/>}
+                        </IconButton>
+                        <IconButton sx={{display: {sm: 'none'}}}>
+                            <LocalGroceryStoreIcon onClick={() => navigate("/cashout")}/>
                         </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{flexGrow: 1, display: {xs: 'none', sm: 'flex'}}}
                         >
-                            <Link className={"nav__logo"} to={"/"} onClick={() => console.log(user)}>
+                            <Link className={"nav__logo"} to={"/"}>
                                 <Logo/>
                             </Link>
                             <Link to={"/login"} className={"nav__login"}>
@@ -154,7 +156,7 @@ export default function ElevateAppBar(props) {
                             </Link>
                             <Link to={"/cashout"} className={"nav__login"}>
                                 <IconButton>
-                                   <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
+                                    <LocalGroceryStoreIcon sx={{width: "40px", height: "40px"}}/>
                                 </IconButton>
                             </Link>
                         </Typography>
@@ -164,6 +166,7 @@ export default function ElevateAppBar(props) {
                                     {item}
                                 </Link>
                             ))}
+                            {content}
                         </Box>
                     </Toolbar>
                     <nav className={"nav"}>

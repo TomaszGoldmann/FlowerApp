@@ -1,23 +1,34 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Typography,
-    Button, Grid, Container
+    Button, Grid
 } from '@mui/material';
 import {Paper} from "@mui/material";
-import {db} from '../firebase/firebase'
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
-import MyContext from "../../myContext";
+// import MyContext from "../../myContext";
 import IconButton from '@mui/material/IconButton';
 
 export const Store = () => {
-    const [storedArr, setStoredArr] = useState(JSON.parse(localStorage.getItem('myObject')))
-    const [error, setError] = useState(null)
-    const {user} = useContext(MyContext)
+    const [storedArr, setStoredArr] = useState([])
+    // const [error, setError] = useState(null)
+    // const {user} = useContext(MyContext)
     const navigate = useNavigate()
 
-    console.log(user)
+    useEffect(() => {
+        let data
+        try {
+            data = JSON.parse(localStorage.getItem('myObject')) || []
+        } catch (e) {
+            console.log(e)
+            data = []
+        }
+
+        setStoredArr(data)
+    }, [])
+
+    // console.log(user)
     // Obliczanie całkowitej sumy zakupów
     // const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
 
@@ -26,11 +37,12 @@ export const Store = () => {
         // const res = await db.collection('Zamówienia').doc("new").set(storedObj);
         // console.log(res)
 
-        if (user) {
-            navigate('/cashout/checkout');
-        } else {
-            setError("Zaloguj się");
-        }
+        // if (user) {
+        //     navigate('/login');
+        // } else {
+        //     setError("Zaloguj się");
+        // }
+        navigate("/cashout/checkout")
     }
 
     return (
@@ -81,6 +93,7 @@ export const Store = () => {
             {
                 storedArr.length ?
                     <>
+
                         <Button
                             variant="contained"
                             color="primary"
