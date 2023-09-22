@@ -9,10 +9,10 @@ import ElevateAppBar from "../Navigation/Navigation";
 import MyProvider from "../Provider";
 import {Login} from "../Login/Login";
 import {SignUp} from "../Login/SignUp/SignUp";
-import {Store} from "../Summary/store";
+import {Summary} from "../Summary/Summary";
 import {About} from "../About/About";
-import {Checkout} from "../Summary/checkout/Checkout";
-import {PaymentForm} from "../Summary/checkout/PaymentForm";
+import {Checkout} from "../Summary/Checkout/Checkout";
+import {PaymentForm} from "../Summary/Checkout/PaymentForm";
 import {Orders} from "../Orders/Orders";
 import {PrivateRoute} from "./PrivateRoute";
 
@@ -29,9 +29,9 @@ function App() {
                         <Route path="/kontakt" element={<Contact/>}/>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/orders" element={<Orders/>}/>
-                        <Route path="/cashout" element={<Store/>}/>
-                        <Route path="/cashout/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}/>
-                        <Route path="/cashout/paymentForm" element={<PaymentForm/>}/>
+                        <Route path="/summary" element={<Summary/>}/>
+                        <Route path="/summary/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}/>
+                        <Route path="/summary/paymentForm" element={<PaymentForm/>}/>
                         <Route path="/login/signup" element={<SignUp/>}/>
                         <Route path="/*" element={<Home/>}/> {/* Domyślna ścieżka */}
                     </Routes>

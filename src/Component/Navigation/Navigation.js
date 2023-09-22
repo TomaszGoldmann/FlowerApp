@@ -14,7 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import {Logo} from "../../Logo/logo";
+import {Logo} from "../../Logo/Logo";
 import "./navigation.scss"
 import {Link, useNavigate} from "react-router-dom";
 import CloseIcon from '@mui/icons-material/Close';
@@ -127,6 +127,7 @@ export default function ElevateAppBar(props) {
             <ElevationScroll {...props}>
                 <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px"}}>
                     <Toolbar>
+                        {/*Mobile DOWN*/}
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
@@ -142,17 +143,30 @@ export default function ElevateAppBar(props) {
                             sx={{display: {sm: 'none'}}}
                         >
                             {user ? <Typography
-                                    variant="h6"
-                                    component="div"
-                                    sx={{flexGrow: 1, display: {xs: 'block', sm: 'none'}}}
-                                    onClick={handleSignOut}>
-                                    {user.displayName}
+                                                id="basic-button"
+                                                aria-controls={open ? 'basic-menu' : undefined}
+                                                aria-haspopup="true"
+                                                aria-expanded={open ? 'true' : undefined}
+                                                onClick={handleClick}>
+                                    Hej, {user.displayName}!
                                 </Typography> :
                                 <AccountCircleIcon onClick={() => navigate("/Login")}/>}
                         </IconButton>
+                        <Menu
+                            id="basic-button"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleClose}
+                            MenuListProps={{
+                                'aria-labelledby': 'mobileMenu',
+                            }}
+                        >
+                            <MenuItem onClick={handleSignOut}>Wyloguj</MenuItem>
+                        </Menu>
                         <IconButton sx={{display: {sm: 'none'}}}>
                             <LocalGroceryStoreIcon onClick={() => navigate("/Summary")}/>
                         </IconButton>
+                        {/*Mobile UP*/}
                         <Typography
                             variant="h6"
                             component="div"

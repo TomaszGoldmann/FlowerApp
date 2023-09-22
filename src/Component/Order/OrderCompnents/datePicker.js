@@ -6,9 +6,18 @@ import dayjs from 'dayjs';
 
 export default function FirstComponent({order, setOrder}) {
     const handleDateChange = (newDate) => {
+        const date = new Date(newDate.$d);
+
+        const day = date.getDate(); // Pobieramy dzień (1-31)
+        const month = date.toLocaleString('default', { month: 'long' }); // Pobieramy nazwę miesiąca
+        const year = date.getFullYear(); // Pobieramy rok
+
+        const formattedDate = `${day} ${month} ${year}`;
+        console.log(formattedDate); // Wyświetli sformatowaną datę: "28 September 2023"
+
         setOrder({
             ...order,
-            timeToMake: newDate.$d
+            timeToMake: formattedDate
         });
     };
 

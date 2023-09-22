@@ -1,0 +1,14 @@
+@import "src/Theme/theme";
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.highlight {
+  background-color: $main;
+  color: $secondary;
+  border-radius: 5px;
+  padding: 5px;
+}

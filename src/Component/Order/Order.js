@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import "./order.scss"
 import pic from "../../assets/kwiatek1.png";
 import pic2 from "../../assets/kwiatek2.png";
+import med from "../../assets/medium.jpg"
 import Autocomplete from '@mui/material/Autocomplete';
 import MyContext from "../../myContext";
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,6 +25,7 @@ export const Order = () => {
     const [tulips, setTulips] = useState(0)
     const [checked, setChecked] = useState([false, false, false]);
     const [isCustom, setIsCustom] = useState(false);
+    const [error, setError] = useState(false);
     const [open, setOpen] = useState(false);
     const {owners} = useContext(MyContext)
 
@@ -31,7 +33,10 @@ export const Order = () => {
     // Pobierz istniejącą tablicę z localStorage lub inicjuj jako pustą tablicę
     const existingOrdersJSON = localStorage.getItem('myObject');
     const existingOrders = existingOrdersJSON ? JSON.parse(existingOrdersJSON) : [];
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        setOpen(true);
+        setError(false)
+    }
     const handleClose = () => {
         setSize("")
         setOpen(false);
@@ -109,7 +114,8 @@ export const Order = () => {
                 green,
                 adding,
                 homeDelivery,
-            }
+            },
+            price: newSuma
         })
     };
 
@@ -166,36 +172,80 @@ export const Order = () => {
     }
 
     const handleAdd = () => {
-        // Dodaj nowy obiekt (Order) do tablicy
-        existingOrders.push(order);
+        if (checked[2] === false) {
+            if (order.timeToMake.length !== 0 && order.extras.color !== "Kolorystyka" && order.flowerShopName.length !== 0) {
+                // Dodaj nowy obiekt (Order) do tablicy
+                existingOrders.push(order);
 
-        // Zapisz zaktualizowaną tablicę z powrotem do localStorage
-        localStorage.setItem('myObject', JSON.stringify(existingOrders));
+                // Zapisz zaktualizowaną tablicę z powrotem do localStorage
+                localStorage.setItem('myObject', JSON.stringify(existingOrders));
 
-        setOpen(false)
-        setSize("")
-        setOpen(false);
-        setChecked([false, false, false])
-        setIsCustom(false)
-        setColor("Kolorystyka")
-        setFlowerShopName("")
-        setRoses(0)
-        setTulips(0)
-        setOrder({
-            size: "",
-            price: "",
-            extras: {
-                green: checked[0],
-                adding: checked[1],
-                homeDelivery: checked[2],
-                color: "",
-                address: ""
-            },
-            timeToMake: "",
-            flowerShopName: "",
-            roses: "",
-            tulips: "",
-        })
+                setOpen(false)
+                setSize("")
+                setOpen(false);
+                setChecked([false, false, false])
+                setIsCustom(false)
+                setColor("Kolorystyka")
+                setFlowerShopName("")
+                setRoses(0)
+                setTulips(0)
+                setOrder({
+                    size: "",
+                    price: "",
+                    extras: {
+                        green: checked[0],
+                        adding: checked[1],
+                        homeDelivery: checked[2],
+                        color: "",
+                        address: ""
+                    },
+                    timeToMake: "",
+                    flowerShopName: "",
+                    roses: "",
+                    tulips: "",
+                })
+            } else {
+                setError(true)
+            }
+        } else {
+            if (order.timeToMake.length !== 0
+                && order.extras.color !== "Kolorystyka"
+                && order.flowerShopName.length !== 0
+                && order.extras.address.length !== 0) {
+                // Dodaj nowy obiekt (Order) do tablicy
+                existingOrders.push(order);
+
+                // Zapisz zaktualizowaną tablicę z powrotem do localStorage
+                localStorage.setItem('myObject', JSON.stringify(existingOrders));
+
+                setOpen(false)
+                setSize("")
+                setOpen(false);
+                setChecked([false, false, false])
+                setIsCustom(false)
+                setColor("Kolorystyka")
+                setFlowerShopName("")
+                setRoses(0)
+                setTulips(0)
+                setOrder({
+                    size: "",
+                    price: "",
+                    extras: {
+                        green: checked[0],
+                        adding: checked[1],
+                        homeDelivery: checked[2],
+                        color: "",
+                        address: ""
+                    },
+                    timeToMake: "",
+                    flowerShopName: "",
+                    roses: "",
+                    tulips: "",
+                })
+            } else {
+                setError(true)
+            }
+        }
     }
 
     return (
@@ -230,13 +280,18 @@ export const Order = () => {
                     </Paper>
                 </Grid>
                 <Grid xs={12} sm={6} md={4} className={"scale"}>
-                    <Paper elevation={5} onClick={() => {
-                        setIsCustom(true)
-                        handlePop(0)
-                    }}>
-
-                        <img className={"paper__img"}
-                             src={"https://i.pinimg.com/564x/be/c2/06/bec206fd20dfa9c33efaf444f0b733d4.jpg"}
+                    <Paper elevation={5}
+                        // onClick={() => {
+                        //     setIsCustom(true)
+                        //     handlePop(0)
+                        // }}
+                           className={"inProgress"}
+                    >
+                        {/*<img className={"paper__img"}*/}
+                        {/*     src={"https://i.pinimg.com/564x/be/c2/06/bec206fd20dfa9c33efaf444f0b733d4.jpg"}*/}
+                        {/*     alt={"flower"}/>*/}
+                        <img className={"inProgress--img"}
+                             src={"https://cdn-icons-png.flaticon.com/512/5229/5229377.png"}
                              alt={"flower"}/>
                         <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>
                             Custom
@@ -244,7 +299,6 @@ export const Order = () => {
                     </Paper>
                 </Grid>
             </Grid>
-
             {/*////////////// Modal*/}
             <Modal
                 open={open}
@@ -276,16 +330,10 @@ export const Order = () => {
                             })
                         }}>
                         <MenuItem disabled value="Kolorystyka">Kolorystyka</MenuItem>
-                        <MenuItem value={"pink"}>pink</MenuItem>
-                        <MenuItem value={"red"}>red</MenuItem>
-                        <MenuItem value={"purple"}>purple</MenuItem>
+                        <MenuItem value={"różowy"}>różowy</MenuItem>
+                        <MenuItem value={"czerwony"}>czerwony</MenuItem>
+                        <MenuItem value={"fioletowy"}>fioletowy</MenuItem>
                     </Select>
-                    {/*<ComboBox/>*/}
-                    {/*<TextField id="outlined-basic"*/}
-                    {/*           label="Która kwiaciarnia"*/}
-                    {/*           variant="outlined"*/}
-                    {/*           value={flowerShopName}*/}
-                    {/*           />*/}
                     <Autocomplete
                         disablePortal
                         className={"width"}
@@ -305,7 +353,7 @@ export const Order = () => {
                     <FormControlLabel
                         control={<Checkbox checked={checked[0]} onChange={(event) => handleChange(event, 0)}
                                            value={values[0]}/>}
-                        label="+5zł zielenina"
+                        label="+5zł przybranie"
                     />
                     <FormControlLabel
                         control={<Checkbox checked={checked[1]} onChange={(event) => handleChange(event, 1)}
@@ -368,9 +416,16 @@ export const Order = () => {
                         {/*<Button onClick={handleAdd} variant="contained">+</Button>*/}
                         {/*<Button onClick={handleRemove} variant="contained">-</Button>*/}
                     </div> : null}
+                    {error && <Typography className={"align"} variant="h5" component="h3"
+                                          sx={{textAlign: "center", color: "red"}}>
+                        Popraw puste pola!
+                    </Typography>}
                     <Box className={"flexa"}>
                         <Typography variant="h6" component="h6"
-                                    onClick={() => console.log(order)}>suma: {suma} zł</Typography>
+                                    onClick={() => console.log(order.timeToMake)}>
+                            suma:
+                            <span className={"highlight"}>{suma} zł</span>
+                        </Typography>
                         <Button variant="contained" onClick={handleAdd}
                         >Dodaj do koszyka</Button>
                     </Box>
