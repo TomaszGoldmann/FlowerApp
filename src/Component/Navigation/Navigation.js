@@ -92,7 +92,7 @@ export default function ElevateAppBar(props) {
                 }
             })
         }
-    }, [user])
+    }, [user, owners])
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
