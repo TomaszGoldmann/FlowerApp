@@ -46,7 +46,7 @@ export const SignUp = () => {
                 updateProfile(auth.currentUser, {
                     displayName: values.name
                 }).then(() => {
-                    console.log("Zaaktualizowano nazwe!" + " " + userCredential.user.displayName)
+                    console.log("Zaaktualizowano nazwe!")
                 }).catch((error) => {
                     console.log(error.message)
                 });
