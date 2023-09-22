@@ -1,0 +1,75 @@
+@import "src/Theme/theme";
+
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: all 0.3s ease; /* Dodajemy animację dla płynnego efektu sticky */
+}
+
+.centered-div {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sticky {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  background-color: #fff;
+}
+
+.img {
+  border-radius: 10px;
+  height: 200px;
+}
+
+.paper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    margin-top: 20px;
+  }
+
+  &__img {
+    //width: 100%;
+    height: 235px;
+    padding: 10px;
+    border-radius: 15px;
+    width: 100%;
+    //height: 100%;
+    object-fit: cover;
+  }
+}
+
+.scroll-carousel-viewport {
+  border-radius: 10px;
+  height: 200px;
+}
+
+.mid {
+  margin: 0 auto;
+  text-decoration: none;
+}
+
+.home {
+  &__item {
+    transition: 0.3s;
+    max-height: 429px;
+    &--paper{
+      max-height: 429px;
+    }
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}

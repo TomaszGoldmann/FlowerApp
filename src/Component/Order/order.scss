@@ -1,0 +1,41 @@
+.scale {
+  transition: 0.3s ease-out;
+
+  &:hover {
+    transform: scale(1.01);
+  }
+}
+
+.modal{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  border: 2px solid #000;
+  background-color: white;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.align{
+  margin-right: 50px;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+}
+
+.flex{
+  display: flex;
+}
+
+.flexa{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.width{
+  width: 100%;
+}

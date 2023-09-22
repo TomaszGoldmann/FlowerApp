@@ -1,0 +1,25 @@
+@import "src/Theme/theme";
+
+.newsletterSection {
+  padding: 20px;
+  border-radius: 5px;
+  //textAlign: center;
+  background-color: $secondary;
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  //fontSize: 24px;
+  //marginBottom: 100px;
+}
+
+.inputField {
+  margin: 20px 0;
+  background-color: $main-light;
+}
+
+.subscribeButton {
+  margin: 0 auto;
+  color: red;
+}

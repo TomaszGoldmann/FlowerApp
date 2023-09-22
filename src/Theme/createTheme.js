@@ -6,14 +6,14 @@ export const theme = createTheme({
         primary: {
             light: '#aabcb2',
             main: '#718c7f',
-            dark: '#4f6a5c',
-            contrastText: '#d2b06b',
+            dark: '#3E4D45',
+            contrastText: "#DEDABD",
         },
         secondary: {
-            light: '#e3e787',
-            main: '#dac476',
-            dark: '#c4915a',
-            contrastText: '#aabcb2',
+            light: '#FAF3D5',
+            main: '#DEDABD',
+            dark: '#F5F5DC',
+            contrastText: '#3E4D45',
         },
     },
     typography: {

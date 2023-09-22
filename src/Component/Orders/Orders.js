@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Typography, Grid, Paper} from '@mui/material';
+import {Typography, Paper} from '@mui/material';
 import {getDocs} from 'firebase/firestore';
-import {colRefOrders} from "../firebase/firebase";
-// import {useUser} from "../provider";
+import {colRefOrders} from "../Firebase/Firebase";
+import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
+import {useUser} from "../Provider";
 
 export const Orders = () => {
     const [orders, setOrders] = useState([]);
-    // const {user} = useUser()
+    const {user} = useUser()
 
     useEffect(() => {
         getDocs(colRefOrders)
@@ -26,20 +27,23 @@ export const Orders = () => {
     const Display = () => {
         return orders.flatMap((order) =>
             order.data.map((el, i) => (
-                // {user.email === el.flowerShopName}
-                <Grid key={i}>
-                    <Paper sx={{p: "30px", m: "0 auto"}}>
-                        <Typography variant="h4" gutterBottom>
-                            Nazwa kwiacirani: {el.flowerShopName}
-                        </Typography>
-                        <Typography variant="h4" gutterBottom>
-                            {el.price} zł
-                        </Typography>
-                        {el.extras.green && <Typography variant="h4" gutterBottom>Zielenina</Typography>}
-                        {el.extras.adding && <Typography variant="h4" gutterBottom>wstążka</Typography>}
-                        {el.extras.homeDelivery && <Typography variant="h4" gutterBottom>Dostawa</Typography>}
-                    </Paper>
-                </Grid>
+                <>
+                    {user.displayName === el.flowerShopName && (
+                        <Grid key={i}>
+                            <Paper sx={{p: "30px", m: "0 auto"}}>
+                                <Typography variant="h4" gutterBottom>
+                                    Nazwa kwiaciarni: {el.flowerShopName}
+                                </Typography>
+                                <Typography variant="h4" gutterBottom>
+                                    {el.price} zł
+                                </Typography>
+                                {el.extras.green && <Typography variant="h4" gutterBottom>Zielenina</Typography>}
+                                {el.extras.adding && <Typography variant="h4" gutterBottom>wstążka</Typography>}
+                                {el.extras.homeDelivery && <Typography variant="h4" gutterBottom>{el.extras.address}</Typography>}
+                            </Paper>
+                        </Grid>
+                    )}
+                </>
             )));
     };
 
