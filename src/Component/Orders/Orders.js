@@ -34,10 +34,11 @@ export const Orders = () => {
                                 <Typography variant="h4" gutterBottom>
                                     {el.price} zł
                                 </Typography>
-                                {el.extras.green && <Typography variant="h4" gutterBottom>Kolor: {el.extras.color}</Typography>}
-                                {el.extras.green && <Typography variant="h4" gutterBottom>przybranie</Typography>}
-                                {el.extras.adding && <Typography variant="h4" gutterBottom>wstążka</Typography>}
-                                {el.extras.homeDelivery && <Typography variant="h4" gutterBottom>Adres dostawy: {el.extras.address}</Typography>}
+                                {el.extras.color && <Typography variant="h4">Kolor: {el.extras.color}</Typography>}
+                                {el.extras.green && <Typography variant="h4">przybranie</Typography>}
+                                {el.extras.adding && <Typography variant="h4">wstążka</Typography>}
+                                <Typography variant="h4">Data realizacji: {el.timeToMake}</Typography>
+                                {el.extras.homeDelivery && <Typography variant="h4">Adres dostawy: {el.extras.address}</Typography>}
                             </Paper>
                         </Grid>
                     )}

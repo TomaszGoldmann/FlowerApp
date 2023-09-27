@@ -12,9 +12,12 @@ import MyContext from "../../myContext";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert';
 import "./login.scss"
 
 export const Login = () => {
+    const [error, setError] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [values, setValues] = useState({
         email: "",
         password: ""
@@ -27,10 +30,12 @@ export const Login = () => {
             .then((userCredential) => {
                 // Signed in
                 setUser(userCredential.user)
+                setError(false)
                 navigate("/")
                 // ...
             })
             .catch((error) => {
+                setError(true)
                 console.log(error.message)
             });
     }
@@ -57,6 +62,7 @@ export const Login = () => {
                 </Typography>
                 <Box component="form" noValidate sx={{mt: 1}}>
                     <TextField
+                        error={error}
                         margin="normal"
                         required
                         fullWidth
@@ -69,16 +75,23 @@ export const Login = () => {
                         onChange={(e) => setValues({...values, email: e.target.value})}
                     />
                     <TextField
+                        error={error}
                         margin="normal"
                         required
                         fullWidth
                         name="password"
                         label="Hasło"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         id="password"
                         autoComplete="current-password"
                         value={values.password}
                         onChange={(e) => setValues({...values, password: e.target.value})}
+                    />
+                    {error &&   <Alert severity="error">Nieprawidłowy E-mail lub hasło</Alert>}
+                    <FormControlLabel
+                        control={<Checkbox checked={showPassword}
+                                           onChange={() => setShowPassword(!showPassword)} color="primary"/>}
+                        label="Pokaż hasło"
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary"/>}

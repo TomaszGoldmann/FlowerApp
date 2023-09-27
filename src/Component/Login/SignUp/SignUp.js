@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -20,6 +20,9 @@ import Container from '@mui/material/Container';
 export const SignUp = () => {
     const navigate = useNavigate()
     const {setUser} = useContext(MyContext);
+    const [showPassword, setShowPassword] = useState(false);
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
     const [values, setValues] = useState({
         email: "",
         password: "",
@@ -29,11 +32,17 @@ export const SignUp = () => {
 
     const handleSignUp = () => {
         if (!validator.isEmail(values.email)) {
-            console.log("to nie email")
+            setEmailError(true)
             return
-        } else if (!validator.isStrongPassword(values.password)) {
-            console.log("słabe hasło")
+        } else {
+            setEmailError(false)
+        }
+
+        if (!validator.isStrongPassword(values.password)) {
+            setPasswordError(true)
             return;
+        } else {
+            setPasswordError(false)
         }
         console.log("dobry mail i hasło")
         const auth = getAuth(app);
@@ -46,14 +55,14 @@ export const SignUp = () => {
                 updateProfile(auth.currentUser, {
                     displayName: values.name
                 }).then(() => {
-                    console.log("Zaaktualizowano nazwe!")
+                    setUser(userCredential.user)
                 }).catch((error) => {
                     console.log(error.message)
                 });
                 ///////////////
 
-                setUser(userCredential.user)
-                console.log(userCredential.user)
+                setEmailError(false)
+                setPasswordError(false)
                 navigate("/")
             })
             .catch((error) => {
@@ -63,7 +72,7 @@ export const SignUp = () => {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <Box
                 sx={{
                     marginTop: 4,
@@ -73,13 +82,13 @@ export const SignUp = () => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
+                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                    <LockOutlinedIcon/>
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Zapisz się
                 </Typography>
-                <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Box component="form" noValidate sx={{mt: 3}}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -108,6 +117,8 @@ export const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error={emailError}
+                                helperText={emailError ? "Nie prawidłowy adres E-mail" : ""}
                                 required
                                 fullWidth
                                 id="email"
@@ -120,11 +131,14 @@ export const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                error={passwordError}
+                                helperText={passwordError ? `Twoje hasło powinno zawierać:
+                                duzą litere, zank specjalny, cyfre ` : ""}
                                 required
                                 fullWidth
                                 name="password"
                                 label="Hasło"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'}
                                 id="password"
                                 autoComplete="new-password"
                                 value={values.password}
@@ -133,7 +147,14 @@ export const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                                control={<Checkbox checked={showPassword}
+                                                   onChange={() => setShowPassword(!showPassword)} color="primary"/>}
+                                label="Pokaż hasło"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox value="allowExtraEmails" color="primary"/>}
                                 label="Chcę otrzymywać inspiracje, promocje marketingowe i aktualizacje drogą mailową."
                             />
                         </Grid>
@@ -141,7 +162,7 @@ export const SignUp = () => {
                     <Button
                         fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{mt: 3, mb: 2}}
                         onClick={handleSignUp}
                     >
                         Utwórz konto

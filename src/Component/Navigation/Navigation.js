@@ -84,14 +84,17 @@ export default function ElevateAppBar(props) {
     };
 
     useEffect(() => {
-        setContent(null)
         if (user) {
             owners.forEach(owner => {
                 if (user.displayName === owner) {
                     setContent(<Link className={"nav__btn"} to={`/orders`}>Zamówienia</Link>)
                 }
             })
+
+            return;
         }
+
+        setContent(null)
     }, [user, owners])
 
     const drawer = (
@@ -149,8 +152,8 @@ export default function ElevateAppBar(props) {
                                                 aria-expanded={open ? 'true' : undefined}
                                                 onClick={handleClick}>
                                     Hej, {user.displayName}!
-                                </Typography> :
-                                <AccountCircleIcon onClick={() => navigate("/Login")}/>}
+                                </Typography>
+                                : <AccountCircleIcon onClick={() => navigate("/Login")}/>}
                         </IconButton>
                         <Menu
                             id="basic-button"
