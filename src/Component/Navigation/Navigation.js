@@ -98,16 +98,16 @@ export default function ElevateAppBar(props) {
         setContent(null)
     }, [user, owners])
 
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setMessage("")
-            setInfo("")
-        }, 5000);
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [message, info])
+    // useEffect(() => {
+    //     const timeoutId = setTimeout(() => {
+    //         setMessage("")
+    //         setInfo("")
+    //     }, 5000);
+    //
+    //     return () => {
+    //         clearTimeout(timeoutId);
+    //     };
+    // }, [message, info])
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
@@ -261,8 +261,8 @@ export default function ElevateAppBar(props) {
                     </nav>
                 </AppBar>
             </ElevationScroll>
-            {message && <Alert severity="success" sx={{mt: 1}}>{message}</Alert>}
-            {info && <Alert severity="info" sx={{mt: 1}}>{info}</Alert>}
+            {/*{message && <Alert severity="success" sx={{mt: 1}}>{message}</Alert>}*/}
+            {/*{info && <Alert severity="info" sx={{mt: 1}}>{info}</Alert>}*/}
         </React.Fragment>
     );
 }
