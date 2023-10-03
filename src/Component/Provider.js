@@ -7,6 +7,8 @@ import {app} from "./Firebase/Firebase";
 
 const MyProvider = ({children}) => {
     const [user, setUser] = useState(null)
+    const [message, setMessage] = useState("")
+    const [info, setInfo] = useState("")
     const [payment, setPayment] = useState({
         name: "",
         cardNumber: "",
@@ -44,8 +46,12 @@ const MyProvider = ({children}) => {
 
     const values = {
         user,
-        owners,
         setUser,
+        message,
+        setMessage,
+        info,
+        setInfo,
+        owners,
         payment,
         setPayment,
         address,

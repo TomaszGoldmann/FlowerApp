@@ -29,10 +29,6 @@ export const Summary = () => {
         setStoredArr(data)
     }, [])
 
-    // console.log(user)
-    // Obliczanie całkowitej sumy zakupów
-    // const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-
     const handleSend = () => {
         navigate("/Summary/Checkout")
     }

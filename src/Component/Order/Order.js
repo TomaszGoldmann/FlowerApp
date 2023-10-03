@@ -14,7 +14,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MyContext from "../../myContext";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from "@mui/material/IconButton";
-import MyDatePicker from "./OrderCompnents/datePicker"
+import MyDatePicker from "./OrderCompnents/DatePicker"
+import Alert from "@mui/material/Alert";
 
 export const Order = () => {
     const [flowerShopName, setFlowerShopName] = useState("");
@@ -27,7 +28,7 @@ export const Order = () => {
     const [isCustom, setIsCustom] = useState(false);
     const [error, setError] = useState(false);
     const [open, setOpen] = useState(false);
-    const {owners} = useContext(MyContext)
+    const {owners, setMessage} = useContext(MyContext)
 
 
     // Pobierz istniejącą tablicę z localStorage lub inicjuj jako pustą tablicę
@@ -180,6 +181,7 @@ export const Order = () => {
                 // Zapisz zaktualizowaną tablicę z powrotem do localStorage
                 localStorage.setItem('myObject', JSON.stringify(existingOrders));
 
+                setMessage("Bukiet dodano do koszyka!")
                 setOpen(false)
                 setSize("")
                 setOpen(false);
@@ -218,6 +220,7 @@ export const Order = () => {
                 // Zapisz zaktualizowaną tablicę z powrotem do localStorage
                 localStorage.setItem('myObject', JSON.stringify(existingOrders));
 
+                setMessage("Bukiet dodano do koszyka!")
                 setOpen(false)
                 setSize("")
                 setOpen(false);
@@ -306,12 +309,13 @@ export const Order = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box className={"modal"}>
+                <Box className={"modal"} sx={{width: {xs: "90vw", md: "70vw"}}}>
                     <Box className={"flex"}>
                         <IconButton onClick={handleClose}>
                             <CloseIcon/>
                         </IconButton>
-                        <Typography className={"align"} variant="h6" component="h3" sx={{textAlign: "center"}}>
+                        <Typography className={"align highlight"} variant="h6" component="h3"
+                                    sx={{textAlign: "center"}}>
                             {size}
                         </Typography>
                     </Box>
@@ -336,10 +340,8 @@ export const Order = () => {
                     </Select>
                     <Autocomplete
                         disablePortal
-                        className={"width"}
                         id="combo-box-demo"
                         options={owners}
-                        sx={{width: 300}}
                         renderInput={(params) => <TextField className={"width"} {...params} label="Kwiaciarnia"/>}
                         value={flowerShopName}
                         onChange={(e, newValue) => {
@@ -350,21 +352,49 @@ export const Order = () => {
                             });
                         }}
                     />
-                    <FormControlLabel
-                        control={<Checkbox checked={checked[0]} onChange={(event) => handleChange(event, 0)}
-                                           value={values[0]}/>}
-                        label="+5zł przybranie"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checked[1]} onChange={(event) => handleChange(event, 1)}
-                                           value={values[1]}/>}
-                        label="+2zł wstążka"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checked[2]} onChange={(event) => handleChange(event, 2)}
-                                           value={values[2]}/>}
-                        label="+20zł Dostawa do domu"
-                    />
+                    <Box
+                        sx={{
+                            fontSize: {
+                                xs: "14px",
+                                sm: "inherit"
+                            },
+                        }}
+                    >
+                        <Grid container alignItems="center">
+                            <Grid item>
+                                <FormControlLabel
+                                    control={<Checkbox checked={checked[0]} onChange={(event) => handleChange(event, 0)}
+                                                       value={values[0]}/>}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <label>+5 zł przybranie</label>
+                            </Grid>
+                        </Grid>
+                        <Grid container alignItems="center">
+                            <Grid item>
+                                <FormControlLabel
+                                    control={<Checkbox checked={checked[1]} onChange={(event) => handleChange(event, 1)}
+                                                       value={values[1]}/>}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <label>+2 zł wstążka</label>
+                            </Grid>
+                        </Grid>
+                        <Grid container alignItems="center">
+                            <Grid item>
+                                <FormControlLabel
+                                    control={<Checkbox checked={checked[2]} onChange={(event) => handleChange(event, 2)}
+                                                       value={values[2]}/>}
+                                    label=""
+                                />
+                            </Grid>
+                            <Grid item>
+                                <label>+20zł Dostawa do domu</label>
+                            </Grid>
+                        </Grid>
+                    </Box>
                     {checked[2] && <TextField id="outlined-basic"
                                               label="Na jaki adres ma być dostawa?"
                                               variant="outlined"
@@ -416,21 +446,18 @@ export const Order = () => {
                         {/*<Button onClick={handleAdd} variant="contained">+</Button>*/}
                         {/*<Button onClick={handleRemove} variant="contained">-</Button>*/}
                     </div> : null}
-                    {error && <Typography className={"align"} variant="h5" component="h3"
-                                          sx={{textAlign: "center", color: "red"}}>
-                        Popraw puste pola!
-                    </Typography>}
+                    {error && <Alert severity="error">Popraw puste pola!</Alert>}
                     <Box className={"flexa"}>
-                        <Typography variant="h6" component="h6"
-                                    onClick={() => console.log(order.timeToMake)}>
-                            suma:
+                        <span>
+                            <span>Suma: </span>
                             <span className={"highlight"}>{suma} zł</span>
-                        </Typography>
+                         </span>
                         <Button variant="contained" onClick={handleAdd}
                         >Dodaj do koszyka</Button>
                     </Box>
                 </Box>
             </Modal>
         </Box>
-    );
+    )
+        ;
 }

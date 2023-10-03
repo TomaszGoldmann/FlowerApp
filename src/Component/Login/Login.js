@@ -22,13 +22,14 @@ export const Login = () => {
         email: "",
         password: ""
     })
-    const {setUser, user} = useContext(MyContext);
+    const {setUser, user, setMessage} = useContext(MyContext);
     const navigate = useNavigate()
     const handleLogin = () => {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, values.email, values.password)
             .then((userCredential) => {
                 // Signed in
+                setMessage("Pomyślnie zalogowano!")
                 setUser(userCredential.user)
                 setError(false)
                 navigate("/")

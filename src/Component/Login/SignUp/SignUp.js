@@ -19,7 +19,7 @@ import Container from '@mui/material/Container';
 
 export const SignUp = () => {
     const navigate = useNavigate()
-    const {setUser} = useContext(MyContext);
+    const {setUser, setMessage} = useContext(MyContext);
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
@@ -61,6 +61,7 @@ export const SignUp = () => {
                 });
                 ///////////////
 
+                setMessage("Pomyślnie utworzono konto i zalogowano!")
                 setEmailError(false)
                 setPasswordError(false)
                 navigate("/")
@@ -133,7 +134,7 @@ export const SignUp = () => {
                             <TextField
                                 error={passwordError}
                                 helperText={passwordError ? `Twoje hasło powinno zawierać:
-                                duzą litere, zank specjalny, cyfre ` : ""}
+                                dużą literę, znak specjalny, cyfrę ` : ""}
                                 required
                                 fullWidth
                                 name="password"

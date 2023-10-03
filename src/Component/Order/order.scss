@@ -11,7 +11,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80vw;
   border: 2px solid #000;
   background-color: white;
   padding: 30px;
@@ -33,11 +32,8 @@
 
 .flexa {
   display: flex;
-  justify-content: space-evenly;
-}
-
-.width {
-  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .inProgress {

@@ -4,7 +4,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-export default function FirstComponent({order, setOrder}) {
+export default function MyDatePicker({order, setOrder}) {
     const handleDateChange = (newDate) => {
         const date = new Date(newDate.$d);
 

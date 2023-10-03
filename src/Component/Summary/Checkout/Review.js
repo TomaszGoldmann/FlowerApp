@@ -29,15 +29,15 @@ export default function Review() {
             <List disablePadding>
                 {order.map(product => (
                     <ListItem key={product.flowerShopName} sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={product.flowerShopName} secondary={product.extras.green} />
-                        <Typography variant="body2">{product.price} zł</Typography>
-                        <Typography variant="body2">kolor {product.extras.color}</Typography>
+                        <ListItemText primary={<span className={"highlight"}>{product.flowerShopName}</span>} secondary={"Nazwa kwiaciarni"} />
+                        <Typography variant="body2">cena bukietu: {product.price} zł</Typography>
+                        {/*<Typography variant="body2">kolor {product.extras.color}</Typography>*/}
                     </ListItem>
                 ))}
                 <ListItem sx={{ py: 1, px: 0 }}>
-                    <ListItemText primary="Cena" />
+                    <ListItemText primary="Suma" />
                     <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        {total} zł
+                        <span className={"highlight"}>{total} zł</span>
                     </Typography>
                 </ListItem>
             </List>

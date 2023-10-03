@@ -15,6 +15,7 @@ import {useContext, useState} from "react";
 import MyContext from "../../../myContext";
 import validator from 'validator';
 import "./checkout.scss"
+import Alert from "@mui/material/Alert";
 
 const steps = ['Dane kontaktowe', 'Metoda płatności', 'Podsumowanie'];
 
@@ -35,7 +36,7 @@ function getStepContent(step) {
 export const Checkout = () => {
     const [activeStep, setActiveStep] = React.useState(0);
     const [error, setError] = useState(false)
-    const {payment, address} = useContext(MyContext)
+    const {payment, address, setMessage} = useContext(MyContext)
     const navigate = useNavigate()
 
     const handleNext = () => {
@@ -81,7 +82,8 @@ export const Checkout = () => {
             data = JSON.parse(localStorage.getItem('myObject')) || []
             addDoc(colRefOrders, {data})
                 .then(() => {
-                    alert(`Zamówienie złożono`);
+                    // alert(`Zamówienie złożono`);
+                    setMessage("Zamówienie złożono")
                     localStorage.clear();
                     navigate("/")
                 })
@@ -104,7 +106,7 @@ export const Checkout = () => {
                 </Stepper>
                 <React.Fragment>
                     {getStepContent(activeStep)}
-                    {error && <h1 className={"error"}>Uzupełnij/Popraw puste pola!</h1>}
+                    {error && <Alert sx={{mt: "20px"}} severity="error">Uzupełnij/Popraw pola!</Alert>}
                     <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
                         {activeStep !== 0 && (
                             <Button onClick={handleBack} sx={{mt: 3, ml: 1}}>

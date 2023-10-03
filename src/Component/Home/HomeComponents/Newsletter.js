@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Typography, TextField, Button} from "@mui/material";
 import "./newsletter.scss"
 import {addDoc, collection} from "firebase/firestore";
 import {db} from "../../Firebase/Firebase";
+import MyContext from "../../../myContext";
 
 export const NewsletterSection = () => {
     const [email, setEmail] = useState('');
+    const {setMessage} = useContext(MyContext)
 
     const colRefNewsletter = collection(db, 'newsletter')
 
@@ -17,7 +19,7 @@ export const NewsletterSection = () => {
         addDoc(colRefNewsletter, {email})
             .then(() => {
                 setEmail("")
-                alert(`Zapisano się na newsletter z adresem e-mail: ${email}`);
+                setMessage("Pomyślnie zapisano do newsletter'a!")
             })
     };
 

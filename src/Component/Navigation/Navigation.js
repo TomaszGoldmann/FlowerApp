@@ -27,6 +27,7 @@ import {app} from "../Firebase/Firebase";
 import Tooltip from '@mui/material/Tooltip';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Alert from "@mui/material/Alert";
 
 const drawerWidth = 240;
 const navItems = ["Zamów bukiet!", 'Home', 'O nas', 'kontakt'];
@@ -55,7 +56,7 @@ ElevationScroll.propTypes = {
 
 export default function ElevateAppBar(props) {
     const navigate = useNavigate()
-    const {user, setUser, owners} = useContext(MyContext);
+    const {user, setUser, message, setMessage, info, setInfo, owners} = useContext(MyContext);
     const [content, setContent] = useState(null)
     const {window} = props;
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -96,6 +97,17 @@ export default function ElevateAppBar(props) {
 
         setContent(null)
     }, [user, owners])
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setMessage("")
+            setInfo("")
+        }, 5000);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [message, info])
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
@@ -249,6 +261,8 @@ export default function ElevateAppBar(props) {
                     </nav>
                 </AppBar>
             </ElevationScroll>
+            {message && <Alert severity="success" sx={{mt: 1}}>{message}</Alert>}
+            {info && <Alert severity="info" sx={{mt: 1}}>{info}</Alert>}
         </React.Fragment>
     );
 }
