@@ -5,22 +5,17 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pl';
 import TextField from '@mui/material/TextField';
-import {useEffect} from "react";
 
 export default function MyDatePicker({ order, setOrder }) {
     dayjs.locale('pl');
 
-    useEffect(() => {
-        dayjs.locale('pl');
-    }, []);
-
-    const [selectedDate, handleDateChange] = React.useState(dayjs().add(1, 'day'));
+    const [selectedDate, setSelectedDate] = React.useState(dayjs().add(1, 'day'));
 
     const handleDateChangeWrapper = (date) => {
-        handleDateChange(date);
+        console.log(date.format("D MMMM YYYY"))
+        const formattedDate = date.format("D MMMM YYYY");
 
-        const formattedDate = date.format('DD/MM/YYYY');
-
+        setSelectedDate(date);
         setOrder({
             ...order,
             timeToMake: formattedDate,

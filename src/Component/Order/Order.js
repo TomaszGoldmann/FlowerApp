@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Unstable_Grid2';
 import {Button, Checkbox, FormControlLabel, MenuItem, Paper, Select} from "@mui/material";
@@ -16,10 +16,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from "@mui/material/IconButton";
 import MyDatePicker from "./OrderCompnents/DatePicker"
 import Alert from "@mui/material/Alert";
+import dayjs from "dayjs";
+import {colRefCompanies} from "../Firebase/Firebase";
+import {getDocs} from "firebase/firestore";
 
 export const Order = () => {
     const [flowerShopName, setFlowerShopName] = useState("");
-    const [color, setColor] = useState("Kolorystyka");
     const [size, setSize] = useState("")
     const [suma, setSuma] = useState(0)
     const [roses, setRoses] = useState(0)
@@ -28,8 +30,37 @@ export const Order = () => {
     const [isCustom, setIsCustom] = useState(false);
     const [error, setError] = useState(false);
     const [open, setOpen] = useState(false);
-    const {owners, setMessage} = useContext(MyContext)
+    const [order, setOrder] = useState({
+        size: "",
+        price: "",
+        extras: {
+            green: checked[0],
+            adding: checked[1],
+            homeDelivery: checked[2],
+            color: "Kolorystyka",
+            address: ""
+        },
+        timeToMake: dayjs().add(1, 'day').format("D MMMM YYYY"),
+        flowerShopName: "",
+        roses: "",
+        tulips: "",
+    })
+    const {owners, setOwners, setMessage} = useContext(MyContext)
 
+    useEffect(()=>{
+        getDocs(colRefCompanies)
+            .then((snapshot) => {
+                let ownersData = [];
+                snapshot.docs.forEach((doc) => {
+                    ownersData.push({...doc.data(), id: doc.id});
+                });
+
+                setOwners(ownersData); // Ustaw dane w stanie komponentu
+            })
+            .catch((err) => {
+                console.error(err.message);
+            });
+    }, [setOwners])
 
     // Pobierz istniejącą tablicę z localStorage lub inicjuj jako pustą tablicę
     const existingOrdersJSON = localStorage.getItem('myObject');
@@ -43,38 +74,52 @@ export const Order = () => {
         setOpen(false);
         setChecked([false, false, false])
         setIsCustom(false)
-        setColor("Kolorystyka")
         setFlowerShopName("")
         setRoses(0)
         setTulips(0)
+        setOrder({
+            size: "",
+            price: "",
+            extras: {
+                green: checked[0],
+                adding: checked[1],
+                homeDelivery: checked[2],
+                color: "Kolorystyka",
+                address: ""
+            },
+            timeToMake: dayjs().add(1, 'day').format("D MMMM YYYY"),
+            flowerShopName: "",
+            roses: "",
+            tulips: "",
+        })
     }
-    const [order, setOrder] = useState({
-        size: "",
-        price: "",
-        extras: {
-            green: checked[0],
-            adding: checked[1],
-            homeDelivery: checked[2],
-            color: "",
-            address: ""
-        },
-        timeToMake: "",
-        flowerShopName: "",
-        roses: "",
-        tulips: "",
-    })
 
     const values = [5, 2, 20]
 
     const handlePop = (price, siz) => {
         handleOpen()
-        setOrder({
-            ...order,
-            siz,
-            price
-        })
         setSize(siz)
+        setChecked([false, false, false])
+        setIsCustom(false)
+        setFlowerShopName("")
+        setRoses(0)
+        setTulips(0)
         setSuma(price)
+        setOrder({
+            size: siz,
+            price,
+            extras: {
+                green: checked[0],
+                adding: checked[1],
+                homeDelivery: checked[2],
+                color: "Kolorystyka",
+                address: ""
+            },
+            timeToMake: dayjs().add(1, 'day').format("D MMMM YYYY"),
+            flowerShopName: "",
+            roses: "",
+            tulips: "",
+        })
     }
 
     const handleChange = (event, i) => {
@@ -173,8 +218,11 @@ export const Order = () => {
     }
 
     const handleAdd = () => {
+        console.log(order.extras.color)
         if (checked[2] === false) {
-            if (order.timeToMake.length !== 0 && order.extras.color !== "Kolorystyka" && order.flowerShopName.length !== 0) {
+            if (order.timeToMake.length !== 0
+                && order.extras.color !== "Kolorystyka"
+                && order.flowerShopName.length !== 0) {
                 // Dodaj nowy obiekt (Order) do tablicy
                 existingOrders.push(order);
 
@@ -182,30 +230,7 @@ export const Order = () => {
                 localStorage.setItem('myObject', JSON.stringify(existingOrders));
 
                 setMessage("Bukiet dodano do koszyka!")
-                setOpen(false)
-                setSize("")
                 setOpen(false);
-                setChecked([false, false, false])
-                setIsCustom(false)
-                setColor("Kolorystyka")
-                setFlowerShopName("")
-                setRoses(0)
-                setTulips(0)
-                setOrder({
-                    size: "",
-                    price: "",
-                    extras: {
-                        green: checked[0],
-                        adding: checked[1],
-                        homeDelivery: checked[2],
-                        color: "",
-                        address: ""
-                    },
-                    timeToMake: "",
-                    flowerShopName: "",
-                    roses: "",
-                    tulips: "",
-                })
             } else {
                 setError(true)
             }
@@ -221,30 +246,7 @@ export const Order = () => {
                 localStorage.setItem('myObject', JSON.stringify(existingOrders));
 
                 setMessage("Bukiet dodano do koszyka!")
-                setOpen(false)
-                setSize("")
                 setOpen(false);
-                setChecked([false, false, false])
-                setIsCustom(false)
-                setColor("Kolorystyka")
-                setFlowerShopName("")
-                setRoses(0)
-                setTulips(0)
-                setOrder({
-                    size: "",
-                    price: "",
-                    extras: {
-                        green: checked[0],
-                        adding: checked[1],
-                        homeDelivery: checked[2],
-                        color: "",
-                        address: ""
-                    },
-                    timeToMake: "",
-                    flowerShopName: "",
-                    roses: "",
-                    tulips: "",
-                })
             } else {
                 setError(true)
             }
@@ -252,55 +254,61 @@ export const Order = () => {
     }
 
     return (
-        <Box sx={{mt: 1}}>
-            <Grid container spacing={1}>
-                <Grid xs={12} sm={6} md={4} className={"scale"}>
-                    <Paper className={"scale"} elevation={5} onClick={() => handlePop(40, "Mały Bukiet")}>
-                        <img className={"paper__img"}
+        <Box sx={{mt: 1}} className="container">
+            <Grid container spacing={1} className="container__grid">
+                <Grid xs={12} sm={6} md={4} className="container__grid__item scale">
+                    <Paper className={"container__grid__item__paper scale"} elevation={5}
+                           onClick={() => handlePop(40, "Mały Bukiet")}>
+                        <img className={"container__grid__item__paper__img paper__img"}
                              src={"https://i.pinimg.com/564x/d2/24/ff/d224ffe28275212011f7ee3a70d117fd.jpg"}
                              alt={"flower"}/>
-                        <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>
+                        <Typography variant="h6" component="h6" className={"container__grid__item__paper__text"}
+                                    sx={{textAlign: "center", pb: 2}}>
                             Mały Bukiet
                         </Typography>
                     </Paper>
                 </Grid>
-                <Grid xs={12} sm={6} md={4} className={"scale"}>
-                    <Paper className={"scale"} elevation={5} onClick={() => handlePop(80, "Średni Bukiet")}>
-                        <img className={"paper__img"} src={med} alt={"flower"}/>
-                        <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>
+                <Grid xs={12} sm={6} md={4} className={"container__grid__item scale"}>
+                    <Paper className={"container__grid__item__paper scale"} elevation={5}
+                           onClick={() => handlePop(80, "Średni Bukiet")}>
+                        <img className={"container__grid__item__paper__img paper__img"} src={med} alt={"flower"}/>
+                        <Typography variant="h6" component="h6" className={"container__grid__item__paper__text"}
+                                    sx={{textAlign: "center", pb: 2}}>
                             Średni Bukiet
                         </Typography>
                     </Paper>
                 </Grid>
-                <Grid xs={12} sm={6} md={4} className={"scale"}>
-                    <Paper className={"scale"} elevation={5} onClick={() => handlePop(120, "Duży Bukiet")}>
-                        <img className={"paper__img"}
+                <Grid xs={12} sm={6} md={4} className={"container__grid__item scale"}>
+                    <Paper className={"container__grid__item__paper scale"} elevation={5}
+                           onClick={() => handlePop(120, "Duży Bukiet")}>
+                        <img className={"container__grid__item__paper__img paper__img"}
                              src={"https://i.pinimg.com/564x/90/1e/82/901e8203d0fc06a9b05b6ea97d1817a1.jpg"}
                              alt={"flower"}/>
-                        <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>
+                        <Typography variant="h6" component="h6" className={"container__grid__item__paper__text"}
+                                    sx={{textAlign: "center", pb: 2}}>
                             Duży Bukiet
                         </Typography>
                     </Paper>
                 </Grid>
-                <Grid xs={12} sm={6} md={4} className={"scale"}>
-                    <Paper elevation={5}
-                        // onClick={() => {
-                        //     setIsCustom(true)
-                        //     handlePop(0)
-                        // }}
-                           className={"inProgress"}
-                    >
-                        {/*<img className={"paper__img"}*/}
-                        {/*     src={"https://i.pinimg.com/564x/be/c2/06/bec206fd20dfa9c33efaf444f0b733d4.jpg"}*/}
-                        {/*     alt={"flower"}/>*/}
-                        <img className={"inProgress--img"}
-                             src={"https://cdn-icons-png.flaticon.com/512/5229/5229377.png"}
-                             alt={"flower"}/>
-                        <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>
-                            Custom
-                        </Typography>
-                    </Paper>
-                </Grid>
+                {/*<Grid xs={12} sm={6} md={4} className={"scale"}>*/}
+                {/*    <Paper elevation={5}*/}
+                {/*        // onClick={() => {*/}
+                {/*        //     setIsCustom(true)*/}
+                {/*        //     handlePop(0)*/}
+                {/*        // }}*/}
+                {/*           className={"inProgress"}*/}
+                {/*    >*/}
+                {/*        /!*<img className={"paper__img"}*!/*/}
+                {/*        /!*     src={"https://i.pinimg.com/564x/be/c2/06/bec206fd20dfa9c33efaf444f0b733d4.jpg"}*!/*/}
+                {/*        /!*     alt={"flower"}/>*!/*/}
+                {/*        <img className={"inProgress--img"}*/}
+                {/*             src={"https://cdn-icons-png.flaticon.com/512/5229/5229377.png"}*/}
+                {/*             alt={"flower"}/>*/}
+                {/*        <Typography variant="h6" component="h6" sx={{textAlign: "center", pb: 2}}>*/}
+                {/*            Custom*/}
+                {/*        </Typography>*/}
+                {/*    </Paper>*/}
+                {/*</Grid>*/}
             </Grid>
             {/*////////////// Modal*/}
             <Modal
@@ -308,40 +316,23 @@ export const Order = () => {
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+                className="modal"
             >
-                <Box className={"modal"} sx={{width: {xs: "90vw", md: "70vw"}}}>
-                    <Box className={"flex"}>
-                        <IconButton onClick={handleClose}>
+                <Box className="modal__content" sx={{width: {xs: "90vw", md: "70vw"}}}>
+                    <Box className={"modal__content__header flex"}>
+                        <IconButton onClick={handleClose} className="modal__content__header__close-button">
                             <CloseIcon/>
                         </IconButton>
-                        <Typography className={"align highlight"} variant="h6" component="h3"
+                        <Typography className={"modal__content__header__text align highlight"} variant="h6" component="h3"
                                     sx={{textAlign: "center"}}>
                             {size}
                         </Typography>
                     </Box>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={color}
-                        onChange={e => {
-                            setColor(e.target.value)
-                            setOrder({
-                                ...order,
-                                extras: {
-                                    ...order.extras,
-                                    color: e.target.value
-                                }
-                            })
-                        }}>
-                        <MenuItem disabled value="Kolorystyka">Kolorystyka</MenuItem>
-                        <MenuItem value={"różowy"}>różowy</MenuItem>
-                        <MenuItem value={"czerwony"}>czerwony</MenuItem>
-                        <MenuItem value={"fioletowy"}>fioletowy</MenuItem>
-                    </Select>
                     <Autocomplete
                         disablePortal
+                        className="modal__content__autocomplete"
                         id="combo-box-demo"
-                        options={owners}
+                        options={owners.map(item => item.company)}
                         renderInput={(params) => <TextField className={"width"} {...params} label="Kwiaciarnia"/>}
                         value={flowerShopName}
                         onChange={(e, newValue) => {
@@ -352,50 +343,60 @@ export const Order = () => {
                             });
                         }}
                     />
-                    <Box
-                        sx={{
-                            fontSize: {
-                                xs: "14px",
-                                sm: "inherit"
-                            },
-                        }}
-                    >
-                        <Grid container alignItems="center">
-                            <Grid item>
-                                <FormControlLabel
-                                    control={<Checkbox checked={checked[0]} onChange={(event) => handleChange(event, 0)}
+                    <Select
+                        labelId="demo-simple-select-label"
+                        className="modal__content__select"
+                        id="demo-simple-select"
+                        value={order.extras.color}
+                        onChange={e => {
+                            setOrder({
+                                ...order,
+                                extras: {
+                                    ...order.extras,
+                                    color: e.target.value
+                                }
+                            })
+                        }}>
+                        <MenuItem disabled value="Kolorystyka" className="modal__content__select-option">Kolorystyka</MenuItem>
+                        <MenuItem value={"różowy"} className="modal__content__select-option">różowy</MenuItem>
+                        <MenuItem value={"czerwony"} className="modal__content__select-option">czerwony</MenuItem>
+                        <MenuItem value={"fioletowy"} className="modal__content__select-option">fioletowy</MenuItem>
+                    </Select>
+                    <Box sx={{fontSize: {xs: "14px", sm: "inherit"}}} className="modal__content__options">
+                        <Grid container alignItems="center" className="modal__content__options__grid">
+                            <Grid item className="modal__content__options__grid__item_checkbox">
+                                <FormControlLabel className="modal__content__options__grid__item_checkbox__form"
+                                    control={<Checkbox checked={checked[0]} className="modal__content__options__grid__item_checkbox__form__ckeckbox" onChange={(event) => handleChange(event, 0)}
                                                        value={values[0]}/>}
                                 />
                             </Grid>
-                            <Grid item>
+                            <Grid item className="modal__content__options__grid__item_text">
                                 <label>+5 zł przybranie</label>
                             </Grid>
                         </Grid>
-                        <Grid container alignItems="center">
-                            <Grid item>
-                                <FormControlLabel
-                                    control={<Checkbox checked={checked[1]} onChange={(event) => handleChange(event, 1)}
-                                                       value={values[1]}/>}
-                                />
+                        <Grid container alignItems="center" className="modal__content__options__grid">
+                            <Grid item className="modal__content__options__grid__item_checkbox">
+                                <FormControlLabel className="modal__content__options__grid__item_checkbox__form"
+                                    control={<Checkbox checked={checked[1]} className="modal__content__options__grid__item_checkbox__form__ckeckbox" onChange={(event) => handleChange(event, 1)}
+                                                       value={values[1]}/>}/>
                             </Grid>
-                            <Grid item>
-                                <label>+2 zł wstążka</label>
+                            <Grid item className="modal__content__options__grid__item_text">
+                                <label className="modal__content__options__grid__item_text__label">+2 zł wstążka</label>
                             </Grid>
                         </Grid>
-                        <Grid container alignItems="center">
-                            <Grid item>
-                                <FormControlLabel
-                                    control={<Checkbox checked={checked[2]} onChange={(event) => handleChange(event, 2)}
-                                                       value={values[2]}/>}
-                                    label=""
-                                />
+                        <Grid container alignItems="center" className="modal__content__options__grid">
+                            <Grid item className="modal__content__options__grid__item_checkbox">
+                                <FormControlLabel className="modal__content__options__grid__item_checkbox__form"
+                                    control={<Checkbox checked={checked[2]} className="modal__content__options__grid__item_checkbox__form__ckeckbox" onChange={(event) => handleChange(event, 2)}
+                                                       value={values[2]}/>}/>
                             </Grid>
-                            <Grid item>
-                                <label>+20zł Dostawa do domu</label>
+                            <Grid item className="modal__content__options__grid__item_text">
+                                <label className="modal__content__options__grid__item_text__label">+20zł Dostawa do domu</label>
                             </Grid>
                         </Grid>
                     </Box>
                     {checked[2] && <TextField id="outlined-basic"
+                                              className="modal__address-input"
                                               label="Na jaki adres ma być dostawa?"
                                               variant="outlined"
                                               value={order.extras.address}
@@ -408,7 +409,7 @@ export const Order = () => {
                                                       }
                                                   })
                                               }}/>}
-                    <MyDatePicker order={order} setOrder={setOrder}/>
+                    <MyDatePicker order={order} setOrder={setOrder} className="modal__date-picker"/>
                     {isCustom ? <div>
                         <TextField
                             id="standard-number"
@@ -447,7 +448,7 @@ export const Order = () => {
                         {/*<Button onClick={handleRemove} variant="contained">-</Button>*/}
                     </div> : null}
                     {error && <Alert severity="error">Popraw puste pola!</Alert>}
-                    <Box className={"flexa"}>
+                    <Box className={"modal__content__footer flexa"}>
                         <span>
                             <span>Suma: </span>
                             <span className={"highlight"}>{suma} zł</span>
@@ -459,5 +460,4 @@ export const Order = () => {
             </Modal>
         </Box>
     )
-        ;
 }

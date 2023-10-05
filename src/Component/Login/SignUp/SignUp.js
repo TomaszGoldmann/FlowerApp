@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import TextField from '@mui/material/TextField';
 import {Button} from "@mui/material";
 import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
-import {app} from "../../Firebase/Firebase";
+import {app, db} from "../../Firebase/Firebase";
 import validator from 'validator';
 import {useNavigate} from "react-router-dom";
 import MyContext from "../../../myContext";
@@ -16,21 +16,64 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import {addDoc, collection} from "firebase/firestore";
 
 export const SignUp = () => {
     const navigate = useNavigate()
     const {setUser, setMessage} = useContext(MyContext);
     const [showPassword, setShowPassword] = useState(false);
+    const [company, setCompany] = useState(false);
+    const [newsletter, setNewsletter] = useState(false)
+    const [companyError, setCompanyError] = useState(false)
+    const [nameError, setNameError] = useState(false)
     const [emailError, setEmailError] = useState(false)
     const [passwordError, setPasswordError] = useState(false)
     const [values, setValues] = useState({
         email: "",
         password: "",
         name: "",
-        lastName: ""
+        company: ""
     })
 
+    const colRefNewsletter = collection(db, 'newsletter')
+    const colRefCompanies = collection(db, 'companies')
+
+    const handleSubscribe = () => {
+        addDoc(colRefNewsletter, { email: values.email })
+            .then(() => {
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+    };
+
+    const handleCompany = () => {
+        console.log(values.company)
+        addDoc(colRefCompanies, { company: values.company})
+            .then(() => {
+            })
+            .catch((error) => {
+                console.log(error.message)
+            });
+    };
+
     const handleSignUp = () => {
+        if (values.company.length === 0 && company) {
+            console.log(true)
+            setCompanyError(true)
+            return
+        } else {
+            console.log(false)
+            setCompanyError(false)
+        }
+
+        if (values.name.length === 0) {
+            setNameError(true)
+            return
+        } else {
+            setNameError(false)
+        }
+
         if (!validator.isEmail(values.email)) {
             setEmailError(true)
             return
@@ -44,16 +87,21 @@ export const SignUp = () => {
         } else {
             setPasswordError(false)
         }
-        console.log("dobry mail i hasło")
         const auth = getAuth(app);
         const {email, password} = values
+
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
-
+                if (newsletter) {
+                    handleSubscribe()
+                }
+                if (company) {
+                    handleCompany()
+                }
                 /////////////// Zmiana nazwy
                 updateProfile(auth.currentUser, {
-                    displayName: values.name
+                    displayName: values.company ? values.company : values.name
                 }).then(() => {
                     setUser(userCredential.user)
                 }).catch((error) => {
@@ -91,29 +139,31 @@ export const SignUp = () => {
                 </Typography>
                 <Box component="form" noValidate sx={{mt: 3}}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        {company && <Grid item xs={12} sm={12}>
                             <TextField
-                                autoComplete="given-name"
-                                name="firstName"
+                                error={companyError}
+                                helperText={companyError ? "Wpisz nazwe firmy" : ""}
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="company"
+                                label="Nazwa Firmy"
+                                name="company"
+                                value={values.company}
+                                onChange={(e) => setValues({...values, company: e.target.value})}
+                            />
+                        </Grid>}
+                        <Grid item xs={12} sm={12}>
+                            <TextField
+                                error={nameError}
+                                helperText={nameError ? "Wpisz imię" : ""}
+                                name="Name"
+                                required
+                                fullWidth
+                                id="Name"
                                 label="Imię"
                                 autoFocus
                                 value={values.name}
                                 onChange={(e) => setValues({...values, name: e.target.value})}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Nazwisko"
-                                name="lastName"
-                                autoComplete="family-name"
-                                value={values.lastName}
-                                onChange={(e) => setValues({...values, lastName: e.target.value})}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -155,7 +205,15 @@ export const SignUp = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary"/>}
+                                control={<Checkbox checked={company}
+                                                   onChange={() => setCompany(!company)} color="primary"/>}
+                                label="Załóż konto firmowe"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControlLabel
+                                control={<Checkbox checked={newsletter}
+                                                   onChange={() => setNewsletter(!newsletter)} color="primary"/>}
                                 label="Chcę otrzymywać inspiracje, promocje marketingowe i aktualizacje drogą mailową."
                             />
                         </Grid>

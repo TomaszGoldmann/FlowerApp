@@ -58,8 +58,8 @@ export const Summary = () => {
                             {storedObj.extras.homeDelivery &&
                                 <Typography variant="h6" gutterBottom>
                                     Dostawa do domu {storedObj.extras.address &&
-                                    <Typography variant="h6" gutterBottom>na adres:
-                                        {storedObj.extras.address} + 20 zł
+                                    <Typography variant="h6" gutterBottom>
+                                        na adres: {storedObj.extras.address} + 20 zł
                                     </Typography>}
                                 </Typography>
                             }

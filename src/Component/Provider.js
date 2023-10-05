@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import MyContext from "../myContext";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 import {app} from "./Firebase/Firebase";
 
 // const UserContext = createContext(null)
 
 const MyProvider = ({children}) => {
     const [user, setUser] = useState(null)
+    const [owners, setOwners] = useState([])
+    const [orders, setOrders] = useState([]);
     const [message, setMessage] = useState("")
     const [info, setInfo] = useState("")
     const [payment, setPayment] = useState({
@@ -26,7 +28,7 @@ const MyProvider = ({children}) => {
     })
 
     const items = ["Zamów bukiet!", 'About', 'Contact'];
-    const owners = ["Floris", "Kwiaty&Miut", "Dr.Bloom"];
+    // const owners = ["Floris", "Kwiaty&Miut", "Dr.Bloom"];
     const flowers = []
 
     useEffect(() => {
@@ -52,6 +54,9 @@ const MyProvider = ({children}) => {
         info,
         setInfo,
         owners,
+        setOwners,
+        orders,
+        setOrders,
         payment,
         setPayment,
         address,

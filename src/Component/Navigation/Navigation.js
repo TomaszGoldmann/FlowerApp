@@ -86,7 +86,10 @@ export default function ElevateAppBar(props) {
 
     useEffect(() => {
         if (user) {
-            owners.forEach(owner => {
+            console.log(user.displayName)
+            const Arr = owners.map(item => item.company)
+            console.log(Arr)
+            Arr.forEach(owner => {
                 if (user.displayName === owner) {
                     setContent(<Link className={"nav__btn"} to={`/orders`}>Zamówienia</Link>)
                 }
@@ -107,7 +110,7 @@ export default function ElevateAppBar(props) {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [message, info])
+    }, [message, info, setMessage, setInfo])
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{textAlign: 'center'}}>
@@ -140,7 +143,7 @@ export default function ElevateAppBar(props) {
         <React.Fragment>
             <CssBaseline/>
             <ElevationScroll {...props}>
-                <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px"}}>
+                <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px", position: "relative"}}>
                     <Toolbar>
                         {/*Mobile DOWN*/}
                         <IconButton
@@ -259,10 +262,10 @@ export default function ElevateAppBar(props) {
                             {drawer}
                         </Drawer>
                     </nav>
+                {message && <Alert severity="success" className={"alert"}>{message}</Alert>}
+                {info && <Alert severity="info" className={"alert"}>{info}</Alert>}
                 </AppBar>
             </ElevationScroll>
-            {message && <Alert severity="success" sx={{mt: 1}}>{message}</Alert>}
-            {info && <Alert severity="info" sx={{mt: 1}}>{info}</Alert>}
         </React.Fragment>
     );
 }

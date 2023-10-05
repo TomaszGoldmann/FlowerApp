@@ -1,28 +1,27 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Typography, Paper} from '@mui/material';
-import {getDocs} from 'firebase/firestore';
-import {colRefOrders} from "../Firebase/Firebase";
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import {useUser} from "../Provider";
+import MyContext from "../../myContext";
+import {getDocs} from "firebase/firestore";
+import {colRefOrders} from "../Firebase/Firebase";
 
 export const Orders = () => {
-    const [orders, setOrders] = useState([]);
     const {user} = useUser()
+    const {orders, setOrders} = useContext(MyContext);
 
-    useEffect(() => {
-        getDocs(colRefOrders)
-            .then((snapshot) => {
-                let ordersData = [];
-                snapshot.docs.forEach((doc) => {
-                    ordersData.push({...doc.data(), id: doc.id});
-                });
-
-                setOrders(ordersData); // Ustaw dane w stanie komponentu
-            })
-            .catch((err) => {
-                console.error(err.message);
+    getDocs(colRefOrders)
+        .then((snapshot) => {
+            let ordersData = [];
+            snapshot.docs.forEach((doc) => {
+                ordersData.push({...doc.data(), id: doc.id});
             });
-    }, []);
+
+            setOrders(ordersData); // Ustaw dane w stanie komponentu
+        })
+        .catch((err) => {
+            console.error(err.message);
+        });
 
     const Display = () => {
         return orders.flatMap((order) =>
