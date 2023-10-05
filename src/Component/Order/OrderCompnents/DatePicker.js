@@ -1,51 +1,43 @@
 import * as React from 'react';
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import 'dayjs/locale/pl';
+import TextField from '@mui/material/TextField';
+import {useEffect} from "react";
 
-export default function MyDatePicker({order, setOrder}) {
-    const handleDateChange = (newDate) => {
-        const date = new Date(newDate.$d);
+export default function MyDatePicker({ order, setOrder }) {
+    dayjs.locale('pl');
 
-        const day = date.getDate(); // Pobieramy dzień (1-31)
-        const month = date.toLocaleString('default', { month: 'long' }); // Pobieramy nazwę miesiąca
-        const year = date.getFullYear(); // Pobieramy rok
+    useEffect(() => {
+        dayjs.locale('pl');
+    }, []);
 
-        const formattedDate = `${day} ${month} ${year}`;
-        console.log(formattedDate); // Wyświetli sformatowaną datę: "28 September 2023"
+    const [selectedDate, handleDateChange] = React.useState(dayjs().add(1, 'day'));
+
+    const handleDateChangeWrapper = (date) => {
+        handleDateChange(date);
+
+        const formattedDate = date.format('DD/MM/YYYY');
 
         setOrder({
             ...order,
-            timeToMake: formattedDate
+            timeToMake: formattedDate,
         });
     };
 
     const minDate = dayjs().add(1, 'day').startOf('day');
 
-    const monthNames = [
-        'Styczeń',
-        'Luty',
-        'Marzec',
-        'Kwiecień',
-        'Maj',
-        'Czerwiec',
-        'Lipiec',
-        'Sierpień',
-        'Wrzesień',
-        'Październik',
-        'Listopad',
-        'Grudzień',
-    ];
-
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker value={order.timeToMake}
-                        onChange={e => handleDateChange(e)}
-                        disablePast
-                        minDate={minDate}
-                        dateFormat="DD/MM/YYYY"
-                        monthNames={monthNames}
+            <DatePicker
+                label="Na kiedy chcesz swoje zamówienie?"
+                value={selectedDate}
+                onChange={handleDateChangeWrapper}
+                format="DD/MM/YYYY"
+                minDate={minDate}
+                renderInput={(params) => <TextField {...params} />}
             />
         </LocalizationProvider>
     );
