@@ -33,9 +33,9 @@ const MyProvider = ({children}) => {
 
     useEffect(() => {
         const auth = getAuth(app);
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUser(user)
+        onAuthStateChanged(auth, (userData) => {
+            if (userData) {
+                setUser(userData)
             } else {
                 setUser(null)
             }

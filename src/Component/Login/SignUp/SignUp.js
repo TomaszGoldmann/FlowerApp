@@ -57,7 +57,7 @@ export const SignUp = () => {
             });
     };
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
         if (values.company.length === 0 && company) {
             console.log(true)
             setCompanyError(true)
@@ -90,8 +90,8 @@ export const SignUp = () => {
         const auth = getAuth(app);
         const {email, password} = values
 
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then( async (userCredential) => {
                 // Signed in
                 if (newsletter) {
                     handleSubscribe()
@@ -100,7 +100,7 @@ export const SignUp = () => {
                     handleCompany()
                 }
                 /////////////// Zmiana nazwy
-                updateProfile(auth.currentUser, {
+                await updateProfile(auth.currentUser, {
                     displayName: values.company ? values.company : values.name
                 }).then(() => {
                     setUser(userCredential.user)

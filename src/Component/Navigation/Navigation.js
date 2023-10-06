@@ -143,7 +143,7 @@ export default function ElevateAppBar(props) {
         <React.Fragment>
             <CssBaseline/>
             <ElevationScroll {...props}>
-                <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px", position: "relative"}}>
+                <AppBar component="nav" position={"sticky"} style={{borderRadius: "10px", marginTop: "10px"}}>
                     <Toolbar>
                         {/*Mobile DOWN*/}
                         <IconButton

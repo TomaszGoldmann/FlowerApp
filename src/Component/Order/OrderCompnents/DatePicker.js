@@ -7,12 +7,9 @@ import 'dayjs/locale/pl';
 import TextField from '@mui/material/TextField';
 
 export default function MyDatePicker({ order, setOrder }) {
-    dayjs.locale('pl');
-
     const [selectedDate, setSelectedDate] = React.useState(dayjs().add(1, 'day'));
 
     const handleDateChangeWrapper = (date) => {
-        console.log(date.format("D MMMM YYYY"))
         const formattedDate = date.format("D MMMM YYYY");
 
         setSelectedDate(date);
@@ -25,7 +22,7 @@ export default function MyDatePicker({ order, setOrder }) {
     const minDate = dayjs().add(1, 'day').startOf('day');
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pl">
             <DatePicker
                 label="Na kiedy chcesz swoje zamówienie?"
                 value={selectedDate}
