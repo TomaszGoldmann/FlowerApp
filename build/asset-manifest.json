@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/FlowerApp/static/css/main.4a61b9aa.css",
-    "main.js": "/FlowerApp/static/js/main.338419bb.js",
+    "main.js": "/FlowerApp/static/js/main.63a6b1b8.js",
     "static/js/879.4412953f.chunk.js": "/FlowerApp/static/js/879.4412953f.chunk.js",
     "static/media/owners.jpg": "/FlowerApp/static/media/owners.6a933cca33bf9e48220b.jpg",
     "static/media/pexels-gary-barnes-6231809.jpg": "/FlowerApp/static/media/pexels-gary-barnes-6231809.e20ef9176939f9a0606b.jpg",
@@ -27,11 +27,11 @@
     "static/media/10.jpg": "/FlowerApp/static/media/10.18a3366081c7924e8285.jpg",
     "index.html": "/FlowerApp/index.html",
     "main.4a61b9aa.css.map": "/FlowerApp/static/css/main.4a61b9aa.css.map",
-    "main.338419bb.js.map": "/FlowerApp/static/js/main.338419bb.js.map",
+    "main.63a6b1b8.js.map": "/FlowerApp/static/js/main.63a6b1b8.js.map",
     "879.4412953f.chunk.js.map": "/FlowerApp/static/js/879.4412953f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4a61b9aa.css",
-    "static/js/main.338419bb.js"
+    "static/js/main.63a6b1b8.js"
   ]
 }
